@@ -35,11 +35,11 @@ const register = async (req, res) => {
       [userID, username, hashedPw, role]
     );
     // generate jwt token
-    // const token = jwt.sign(
-    //   { userID: newUser.rows[0].id, username: newUser.rows[0].username },
-    //   process.env.ACCESS_SECRET,
-    //   { expiresIn: "1h" }
-    // );
+    const token = jwt.sign(
+      { userID: newUser.rows[0].id, username: newUser.rows[0].username },
+      process.env.ACCESS_SECRET,
+      { expiresIn: "1h" }
+    );
     res.status(201).json({
       token,
       userID: newUser.rows[0].id,
@@ -91,6 +91,7 @@ const login = async (req, res) => {
   }
 };
 
+// not used for the moment
 const refresh = async (req, res) => {
   try {
     const decoded = jwt.verify(req.body.refresh, process.env.REFRESH_SECRET);
@@ -102,7 +103,7 @@ const refresh = async (req, res) => {
       expiresIn: "1h",
       jwtid: uuidv4(),
     });
-    console.log(`${claims.role}`);
+
     res.json({ access });
   } catch (error) {
     console.log(`refresh error`);
@@ -111,4 +112,5 @@ const refresh = async (req, res) => {
       .json({ status: "error", msg: "failed to refresh token" });
   }
 };
+
 module.exports = { getAllUsers, register, login, refresh };
