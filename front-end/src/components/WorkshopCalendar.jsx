@@ -58,9 +58,8 @@ const WorkshopCalendar = (props) => {
     <>
       <button onClick={() => getBookings()}>dog</button>
       <button onClick={() => setShowCal(true)}>show cal</button>
-      {/* <div>{bookings[0].workshop_type}</div>
-      <div>{bookings[0].booking_date}</div>
-      <div>{bookings[0].booking_cost}</div> */}
+      <button onClick={() => setShowCal(false)}>hide cal</button>
+
       {showCal && (
         <Calendar
           localizer={localizer}
@@ -75,3 +74,39 @@ const WorkshopCalendar = (props) => {
 };
 
 export default WorkshopCalendar;
+
+/*
+TODO:
+-[] register page
+-[] sign in page
+-[] nav
+
+- user
+-[] view booking availability for wood shop and metal shop seperately
+-[] create workshop booking in backend and front end
+-[x] edit workshop booking
+-[x] delete workshop booking
+
+- staff
+-[] current list of bookings
+  -[] staff booking list component
+-[] current inventory
+  -[] material inventory component
+-[] add item into inventory
+-[] edit inventory quantity
+
+- admin 
+-[] admin dashboard
+-[] edit user (only role for now)
+-[] delete user
+
+- backend
+-[x] create workshop booking
+-[x] edit workshop booking
+-[] create new material inventory item
+-[] edit material inventory item quantity
+-[] edit user role 
+-[] delete user
+-[] middleware
+-[] validators
+*/
