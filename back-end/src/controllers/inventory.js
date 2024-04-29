@@ -26,4 +26,45 @@ const addNewMaterial = async (req, res) => {
   }
 };
 
-module.exports = { getAllMaterials, addNewMaterial };
+const editMaterial = async (req, res) => {
+  const { id, material_type, material_name, material_quantity } = req.body;
+  try {
+    const result = await pool.query(
+      "UPDATE materials_inventory SET material_type = $2, material_name = $3, material_quantity =$4 WHERE id=$1",
+      [id, material_type, material_name, material_quantity]
+    );
+    res
+      .status(200)
+      .json({ status: "ok", msg: "material updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(400)
+      .json({ error: error, msg: "failed to update material" });
+  }
+};
+
+const deleteMaterial = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const result = await pool.query(
+      "DELETE FROM materials_inventory WHERE id=$1",
+      [id]
+    );
+    res
+      .status(200)
+      .json({ status: "ok", msg: "material deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(400)
+      .json({ error: error, msg: "failed to delete material" });
+  }
+};
+
+module.exports = {
+  getAllMaterials,
+  addNewMaterial,
+  editMaterial,
+  deleteMaterial,
+};
