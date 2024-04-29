@@ -14,7 +14,7 @@ const getAllUsers = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  const { username, password, role } = req.body;
+  const { username, password, role, first_name, last_name } = req.body;
 
   try {
     const existingUser = await pool.query(
@@ -31,8 +31,8 @@ const register = async (req, res) => {
     const userID = uuidv4();
     // insert into db
     const newUser = await pool.query(
-      "INSERT INTO users (id,username,pw_hash, role) VALUES ($1, $2, $3, $4) RETURNING *",
-      [userID, username, hashedPw, role]
+      "INSERT INTO users (id,username,pw_hash, role, first_name, last_name) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [userID, username, hashedPw, role, first_name, last_name]
     );
     // generate jwt token
     const token = jwt.sign(
@@ -113,4 +113,40 @@ const refresh = async (req, res) => {
   }
 };
 
-module.exports = { getAllUsers, register, login, refresh };
+const editRole = async (req, res) => {
+  const { id, role } = req.body;
+  try {
+    const result = await pool.query("UPDATE users SET role=$2 WHERE id=$1", [
+      id,
+      role,
+    ]);
+    res
+      .status(200)
+      .json({ status: "ok", msg: "user role updated successfully" });
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(400)
+      .json({ error: error, msg: "failed to update user role" });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  const { id } = req.body;
+  try {
+    const result = await pool.query("DELETE FROM users WHERE id=$1", [id]);
+    res.status(200).json({ status: "ok", msg: "user deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ error: error, msg: "failed to delete user" });
+  }
+};
+
+module.exports = {
+  getAllUsers,
+  register,
+  login,
+  refresh,
+  editRole,
+  deleteUser,
+};
