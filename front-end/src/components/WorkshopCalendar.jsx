@@ -4,6 +4,7 @@ import useFetch from "../hooks/useFetch";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import enUS from "date-fns/locale/en-US";
+import { Button } from "@mui/material";
 
 const WorkshopCalendar = (props) => {
   // calendar localisation
@@ -56,9 +57,11 @@ const WorkshopCalendar = (props) => {
 
   return (
     <>
-      <button onClick={() => getBookings()}>dog</button>
-      <button onClick={() => setShowCal(true)}>show cal</button>
-      <button onClick={() => setShowCal(false)}>hide cal</button>
+      <Button variant="contained" onClick={() => getBookings()}>
+        dog
+      </Button>
+      <Button onClick={() => setShowCal(true)}>show cal</Button>
+      <Button onClick={() => setShowCal(false)}>hide cal</Button>
 
       {showCal && (
         <Calendar
@@ -103,10 +106,10 @@ TODO:
 - backend
 -[x] create workshop booking
 -[x] edit workshop booking
--[] create new material inventory item
--[] edit material inventory item quantity
--[] edit user role 
--[] delete user
+-[x] create new material inventory item
+-[x] edit material inventory item quantity
+-[x] edit user role 
+-[x] delete user
 -[] middleware
 -[] validators
 */
