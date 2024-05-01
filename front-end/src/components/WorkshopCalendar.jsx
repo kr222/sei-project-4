@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import useFetch from "../hooks/useFetch";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import enUS from "date-fns/locale/en-US";
-import { Button } from "@mui/material";
+import { Button, Select, MenuItem, TextField } from "@mui/material";
 
 const WorkshopCalendar = (props) => {
   // calendar localisation
@@ -47,6 +47,22 @@ const WorkshopCalendar = (props) => {
     }
   };
 
+  const addBooking = async () => {
+    try {
+      const res = await fetchData("/workshops/addBooking", "PUT", {
+        workshop_type: "Wood Shop",
+        booking_date: "2024-05-05",
+        booking_cost: 1234,
+      });
+      if (res.ok) {
+        console.log(`booking added successfully`);
+        getBookings();
+      } else console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const myEventsList = bookings.map((item) => {
     return {
       title: item.workshop_type,
@@ -55,13 +71,20 @@ const WorkshopCalendar = (props) => {
     };
   });
 
+  useEffect(() => getBookings, []);
+
   return (
     <>
-      <Button variant="contained" onClick={() => getBookings()}>
+      <Button variant="contained" onClick={() => addBooking()}>
         dog
       </Button>
       <Button onClick={() => setShowCal(true)}>show cal</Button>
       <Button onClick={() => setShowCal(false)}>hide cal</Button>
+      <Select>
+        <MenuItem>asdf</MenuItem>
+        <MenuItem>qwer</MenuItem>
+      </Select>
+      <input type="date"></input>
 
       {showCal && (
         <Calendar
@@ -101,12 +124,12 @@ TODO:
 -[x] current inventory
   -[x] material inventory component
 -[] add item into inventory
--[] edit inventory quantity
+-[x] edit inventory quantity
 
 - admin 
--[] admin dashboard
--[] edit user (only role for now)
--[] delete user
+-[x] admin dashboard
+-[x] edit user (only role for now)
+-[x] delete user
 
 - backend
 -[x] create workshop booking
@@ -115,6 +138,6 @@ TODO:
 -[x] edit material inventory item quantity
 -[x] edit user role 
 -[x] delete user
--[] middleware
--[] validators
+-[] middleware (authUser, authStaff, authAdmin)
+-[] validators (express-validator, it's the .not().isEmpty() shit)
 */
