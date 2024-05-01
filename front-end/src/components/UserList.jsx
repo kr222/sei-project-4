@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
+import UserListItem from "./UserListItem";
 
 const UserList = () => {
   const fetchData = useFetch();
@@ -26,35 +27,6 @@ const UserList = () => {
       } else {
         console.log(`bad dog`);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const editUserRole = async (id) => {
-    try {
-      const res = await fetchData("/auth/editRole/", "POST", {
-        id: id,
-        role: "staff",
-      });
-      if (res.ok) {
-        console.log(`role updated successfully`);
-        getAllUsers();
-      } else console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteUser = async (id) => {
-    try {
-      const res = await fetchData("/auth/delete/", "DELETE", {
-        id: id,
-      });
-      if (res.ok) {
-        console.log(`user deleted successfully`);
-        getAllUsers();
-      } else console.log(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -79,7 +51,7 @@ const UserList = () => {
               {userList.map((item) => {
                 return (
                   <TableRow key={item.id}>
-                    <TableCell>{item.username}</TableCell>
+                    {/* <TableCell>{item.username}</TableCell>
                     <TableCell>{item.role}</TableCell>
                     <TableCell>{item.id}</TableCell>
                     <TableCell>
@@ -91,7 +63,13 @@ const UserList = () => {
                       <Button onClick={() => deleteUser(item.id)}>
                         Delete
                       </Button>
-                    </TableCell>
+                    </TableCell> */}
+                    <UserListItem
+                      id={item.id}
+                      username={item.username}
+                      role={item.role}
+                      getAllUsers={getAllUsers}
+                    />
                   </TableRow>
                 );
               })}
