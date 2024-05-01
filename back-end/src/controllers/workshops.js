@@ -3,8 +3,36 @@ const { v4: uuidv4 } = require("uuid");
 
 const getAllBookings = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM workshops");
+    const result = await pool.query(
+      "SELECT * FROM workshops ORDER BY booking_date"
+    );
     res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+const getWoodBookings = async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM workshops WHERE workshop_type='Wood Shop'"
+    );
+    res.json(result.rows);
+    console.log(`wood shop bookings fetched successfully`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
+const getMetalBookings = async (req, res) => {
+  try {
+    const result = await pool.query(
+      "SELECT * FROM workshops WHERE workshop_type='Metal Shop'"
+    );
+    res.json(result.rows);
+    console.log(`wood shop bookings fetched successfully`);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -56,4 +84,11 @@ const deleteBooking = async (req, res) => {
   }
 };
 
-module.exports = { getAllBookings, addNewBooking, editBooking, deleteBooking };
+module.exports = {
+  getAllBookings,
+  getWoodBookings,
+  getMetalBookings,
+  addNewBooking,
+  editBooking,
+  deleteBooking,
+};
