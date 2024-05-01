@@ -3,7 +3,9 @@ const { v4: uuidv4 } = require("uuid");
 
 const getAllMaterials = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM materials_inventory");
+    const result = await pool.query(
+      "SELECT * FROM materials_inventory ORDER BY material_type"
+    );
     res.json(result.rows);
   } catch (error) {
     console.error(error);
@@ -30,7 +32,7 @@ const editMaterial = async (req, res) => {
   const { id, material_type, material_name, material_quantity } = req.body;
   try {
     const result = await pool.query(
-      "UPDATE materials_inventory SET material_type = $2, material_name = $3, material_quantity =$4 WHERE id=$1",
+      "UPDATE materials_inventory SET material_type = COALESCE(NULLIF($2, ''),material_type), material_name = COALESCE(NULLIF($3, ''), material_name),material_quantity =$4 WHERE id=$1",
       [id, material_type, material_name, material_quantity]
     );
     res
@@ -54,6 +56,7 @@ const deleteMaterial = async (req, res) => {
     res
       .status(200)
       .json({ status: "ok", msg: "material deleted successfully" });
+    console.log(result);
   } catch (error) {
     console.log(error);
     return res
