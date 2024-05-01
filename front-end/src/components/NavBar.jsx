@@ -51,7 +51,7 @@ const NavBar = () => {
               Admin
             </Button>
           )}
-          {userCtx.role === "staff" && (
+          {(userCtx.role === "staff" || userCtx.role === "admin") && (
             <Button component={NavLink} to="staff" color="inherit">
               Staff
             </Button>
