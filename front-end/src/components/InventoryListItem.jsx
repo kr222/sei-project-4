@@ -42,7 +42,11 @@ const InventoryListItem = ({ id, type, name, quantity, getAllMaterials }) => {
       <TableCell>{type}</TableCell>
       <TableCell>{name}</TableCell>
       {!editQuantity && <TableCell>{quantity}</TableCell>}
-      {editQuantity && <TextField inputRef={quantityRef} />}
+      {editQuantity && (
+        <TableCell>
+          <TextField inputRef={quantityRef} />
+        </TableCell>
+      )}
       <TableCell>{id}</TableCell>
       <TableCell>
         {!editQuantity && (
@@ -53,7 +57,12 @@ const InventoryListItem = ({ id, type, name, quantity, getAllMaterials }) => {
         )}
       </TableCell>
       <TableCell>
-        <Button onClick={() => deleteMaterial()}>Delete</Button>
+        {!editQuantity && (
+          <Button onClick={() => deleteMaterial()}>Delete</Button>
+        )}
+        {editQuantity && (
+          <Button onClick={() => setEditQuantity(false)}>Cancel</Button>
+        )}
       </TableCell>
     </>
   );
