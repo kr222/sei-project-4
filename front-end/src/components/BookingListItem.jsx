@@ -39,19 +39,19 @@ const BookingListItem = ({
     }
   };
 
-  //   const deleteMaterial = async () => {
-  //     try {
-  //       const res = await fetchData("/inventory/delete/", "DELETE", {
-  //         id: id,
-  //       });
-  //       if (res.ok) {
-  //         console.log(`material deleted successfully`);
-  //         getAllMaterials();
-  //       } else console.log(res.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  const deleteBooking = async () => {
+    try {
+      const res = await fetchData("/workshops/deleteBooking/", "DELETE", {
+        id: id,
+      });
+      if (res.ok) {
+        console.log(`booking deleted successfully`);
+        getAllBookings();
+      } else console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -75,7 +75,7 @@ const BookingListItem = ({
         {/* <Button onClick={() => console.log(`dog`)}>Edit</Button> */}
       </TableCell>
       <TableCell>
-        <Button onClick={() => console.log(`cat`)}>Delete</Button>
+        <Button onClick={() => deleteBooking()}>Delete</Button>
       </TableCell>
     </>
   );
