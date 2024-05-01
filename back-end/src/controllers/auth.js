@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const getAllUsers = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM users");
+    const result = await pool.query("SELECT * FROM users ORDER BY role");
     res.json(result.rows);
   } catch (error) {
     console.error(error);
