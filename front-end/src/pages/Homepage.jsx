@@ -8,7 +8,8 @@ const Homepage = () => {
   return (
     <>
       <WorkshopCalendar />
-      <BookingList />
+
+      <InventoryList />
     </>
   );
 };
