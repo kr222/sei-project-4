@@ -1,50 +1,67 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
+import { useState, useRef, useContext } from "react";
+import UserContext from "../context/user";
+// mui imports
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
-import { NavLink } from "react-router-dom";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { NavLink, useNavigate } from "react-router-dom";
+import useFetch from "../hooks/useFetch";
+import { jwtDecode } from "jwt-decode";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const fetchData = useFetch();
+  const navigate = useNavigate();
+  const userCtx = useContext(UserContext);
+  // input refs
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const [jwt, setJwt] = useState();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // const data = new FormData(event.currentTarget);
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
+    const loginDetails = {
+      username: emailRef.current.value,
+      password: passwordRef.current.value,
+    };
+    const result = await fetchData("/auth/login", "POST", loginDetails);
+    if (result.ok) {
+      console.log(result.data);
+      localStorage.setItem("user", JSON.stringify(result.data));
+      userCtx.setAccessToken(result.data.access);
+      userCtx.setRefreshToken(result.data.refresh);
+
+      const decoded = jwtDecode(result.data.access);
+      userCtx.setUserId(decoded.id);
+      userCtx.setUsername(decoded.username);
+      userCtx.setRole(decoded.role);
+      if (userCtx.role) {
+        console.log(
+          `user id: ${userCtx.userId} username: ${userCtx.username} role: ${userCtx.role}`
+        );
+      }
+      navigate("/");
+    }
   };
 
   return (
@@ -79,6 +96,7 @@ export default function SignIn() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              inputRef={emailRef}
               autoFocus
             />
             <TextField
@@ -89,6 +107,7 @@ export default function SignIn() {
               label="Password"
               type="password"
               id="password"
+              inputRef={passwordRef}
               autoComplete="current-password"
             />
             <FormControlLabel
@@ -103,6 +122,7 @@ export default function SignIn() {
             >
               Sign In
             </Button>
+            <Button onClick={() => console.log(userCtx)}>test</Button>
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
@@ -117,7 +137,6 @@ export default function SignIn() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
   );
