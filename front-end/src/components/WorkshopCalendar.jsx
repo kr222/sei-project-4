@@ -69,6 +69,7 @@ const WorkshopCalendar = (props) => {
           events={myEventsList}
           startAccessor="start"
           endAccessor="end"
+          selectable={true}
           style={{ height: 500 }}
         ></Calendar>
       )}
@@ -80,9 +81,13 @@ export default WorkshopCalendar;
 
 /*
 TODO:
--[] register page
--[] sign in page
--[] nav
+-[x] register page
+-[x] sign in page
+-[x] nav
+-[x] backend calls for individual workshops
+-[x] booking list component
+-[x] inventory list component
+-[x] user list component
 
 - user
 -[] view booking availability for wood shop and metal shop seperately
@@ -91,10 +96,10 @@ TODO:
 -[x] delete workshop booking
 
 - staff
--[] current list of bookings
-  -[] staff booking list component
--[] current inventory
-  -[] material inventory component
+-[x] current list of bookings
+  -[x] staff booking list component
+-[x] current inventory
+  -[x] material inventory component
 -[] add item into inventory
 -[] edit inventory quantity
 
