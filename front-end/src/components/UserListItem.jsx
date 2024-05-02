@@ -41,13 +41,18 @@ const UserListItem = ({ id, username, role, getAllUsers }) => {
       console.log(error);
     }
   };
+
   return (
     <>
       <TableCell>{username}</TableCell>
       {!editRole && <TableCell>{role}</TableCell>}
       {editRole && (
         <TableCell>
-          <Select value={newRole} onChange={handleRoleChange}>
+          <Select
+            value={newRole}
+            defaultValue={role}
+            onChange={handleRoleChange}
+          >
             <MenuItem value="admin">admin</MenuItem>
             <MenuItem value="staff">staff</MenuItem>
             <MenuItem value="user">user</MenuItem>
