@@ -100,6 +100,21 @@ const WorkshopCalendar = (props) => {
       <br />
       <Button onClick={() => setShowCal(true)}>show cal</Button>
       <Button onClick={() => setShowCal(false)}>hide cal</Button>
+      <Button
+        style={{ height: "50px" }}
+        variant="contained"
+        onClick={() => {
+          if (!showCreateBooking) {
+            setShowCreateBooking(true);
+          } else {
+            addBooking();
+            setShowCreateBooking(false);
+          }
+        }}
+      >
+        Create New Booking
+      </Button>
+
       {showCreateBooking && (
         <>
           <FormControl style={{ minWidth: 150 }}>
@@ -117,20 +132,6 @@ const WorkshopCalendar = (props) => {
           ></input>
         </>
       )}
-      <Button
-        style={{ height: "50px" }}
-        variant="contained"
-        onClick={() => addBooking()}
-      >
-        Create New Booking
-      </Button>
-      <Button
-        style={{ height: "50px" }}
-        variant="contained"
-        onClick={() => setShowCreateBooking(true)}
-      >
-        test values
-      </Button>
 
       {showCal && (
         <Calendar
