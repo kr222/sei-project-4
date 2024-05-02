@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import UserContext from "../context/user";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import useFetch from "../hooks/useFetch";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
@@ -14,6 +15,7 @@ import {
 } from "@mui/material";
 
 const WorkshopCalendar = (props) => {
+  const userCtx = useContext(UserContext);
   // calendar localisation
   const locales = {
     "en-US": enUS,
@@ -47,7 +49,7 @@ const WorkshopCalendar = (props) => {
   const [bookings, setBookings] = useState([]);
 
   // state for showing/hiding calendar
-  const [showCal, setShowCal] = useState(false);
+  const [showCal, setShowCal] = useState(true);
 
   const getBookings = async () => {
     try {
@@ -98,22 +100,40 @@ const WorkshopCalendar = (props) => {
   return (
     <>
       <br />
-      <Button onClick={() => setShowCal(true)}>show cal</Button>
-      <Button onClick={() => setShowCal(false)}>hide cal</Button>
-      <Button
-        style={{ height: "50px" }}
-        variant="contained"
-        onClick={() => {
-          if (!showCreateBooking) {
-            setShowCreateBooking(true);
-          } else {
-            addBooking();
-            setShowCreateBooking(false);
-          }
-        }}
-      >
-        Create New Booking
-      </Button>
+      {!showCal && (
+        <Button
+          variant="outlined"
+          style={{ height: "50px" }}
+          onClick={() => setShowCal(true)}
+        >
+          show cal
+        </Button>
+      )}
+      {showCal && (
+        <Button
+          variant="outlined"
+          style={{ height: "50px" }}
+          onClick={() => setShowCal(false)}
+        >
+          hide cal
+        </Button>
+      )}
+      {userCtx.role === "user" && (
+        <Button
+          style={{ height: "50px" }}
+          variant="contained"
+          onClick={() => {
+            if (!showCreateBooking) {
+              setShowCreateBooking(true);
+            } else {
+              addBooking();
+              setShowCreateBooking(false);
+            }
+          }}
+        >
+          Create New Booking
+        </Button>
+      )}
 
       {showCreateBooking && (
         <>
@@ -140,7 +160,7 @@ const WorkshopCalendar = (props) => {
           startAccessor="start"
           endAccessor="end"
           selectable={true}
-          style={{ height: 500 }}
+          style={{ height: 500, margin: "15px" }}
         ></Calendar>
       )}
     </>
@@ -161,7 +181,7 @@ TODO:
 
 - user
 -[] view booking availability for wood shop and metal shop seperately
--[] create workshop booking in backend and front end
+-[x] create workshop booking in backend and front end
 -[x] edit workshop booking
 -[x] delete workshop booking
 
@@ -170,7 +190,7 @@ TODO:
   -[x] staff booking list component
 -[x] current inventory
   -[x] material inventory component
--[] add item into inventory
+-[x] add item into inventory
 -[x] edit inventory quantity
 
 - admin 
@@ -187,4 +207,6 @@ TODO:
 -[x] delete user
 -[] middleware (authUser, authStaff, authAdmin)
 -[] validators (express-validator, it's the .not().isEmpty() shit)
+
+-[x] show/hide cal in 1 shortcircuit button
 */
