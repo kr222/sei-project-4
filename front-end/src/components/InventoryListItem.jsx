@@ -11,10 +11,15 @@ const InventoryListItem = ({ id, type, name, quantity, getAllMaterials }) => {
 
   const editMaterialQuantity = async () => {
     try {
-      const res = await fetchData("/inventory/edit/", "POST", {
-        id: id,
-        material_quantity: quantityRef.current.value,
-      });
+      const res = await fetchData(
+        "/inventory/edit/",
+        "POST",
+        {
+          id: id,
+          material_quantity: quantityRef.current.value,
+        },
+        userCtx.accessToken
+      );
       if (res.ok) {
         getAllMaterials();
         setEditQuantity(false);
@@ -27,9 +32,14 @@ const InventoryListItem = ({ id, type, name, quantity, getAllMaterials }) => {
 
   const deleteMaterial = async () => {
     try {
-      const res = await fetchData("/inventory/delete/", "DELETE", {
-        id: id,
-      });
+      const res = await fetchData(
+        "/inventory/delete/",
+        "DELETE",
+        {
+          id: id,
+        },
+        userCtx.accessToken
+      );
       if (res.ok) {
         console.log(`material deleted successfully`);
         getAllMaterials();
