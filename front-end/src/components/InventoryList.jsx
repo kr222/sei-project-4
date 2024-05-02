@@ -53,11 +53,16 @@ const InventoryList = () => {
 
   const addNewMaterial = async () => {
     try {
-      const res = await fetchData("/inventory/add", "PUT", {
-        material_type: newMaterial,
-        material_name: nameRef.current.value,
-        material_quantity: quantityRef.current.value,
-      });
+      const res = await fetchData(
+        "/inventory/add",
+        "PUT",
+        {
+          material_type: newMaterial,
+          material_name: nameRef.current.value,
+          material_quantity: quantityRef.current.value,
+        },
+        userCtx.accessToken
+      );
       if (res.ok) {
         console.log(`material added successfully`);
         getAllMaterials();
