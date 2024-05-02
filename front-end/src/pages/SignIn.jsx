@@ -20,8 +20,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import { jwtDecode } from "jwt-decode";
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignIn() {
@@ -35,11 +33,7 @@ export default function SignIn() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
+
     const loginDetails = {
       username: emailRef.current.value,
       password: passwordRef.current.value,
