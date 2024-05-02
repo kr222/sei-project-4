@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import UserContext from "../context/user";
 import { Typography, Button, TableCell, Select, MenuItem } from "@mui/material";
 import useFetch from "../hooks/useFetch";
 
 const UserListItem = ({ id, username, role, getAllUsers }) => {
+  const userCtx = useContext(UserContext);
   const fetchData = useFetch();
   const [editRole, setEditRole] = useState(false);
   const [newRole, setNewRole] = useState("");
@@ -14,10 +16,15 @@ const UserListItem = ({ id, username, role, getAllUsers }) => {
 
   const editUserRole = async () => {
     try {
-      const res = await fetchData("/auth/editRole/", "POST", {
-        id: id,
-        role: newRole,
-      });
+      const res = await fetchData(
+        "/auth/editRole/",
+        "POST",
+        {
+          id: id,
+          role: newRole,
+        },
+        userCtx.accessToken
+      );
       if (res.ok) {
         console.log(`role updated successfully`);
         getAllUsers();
@@ -30,9 +37,14 @@ const UserListItem = ({ id, username, role, getAllUsers }) => {
 
   const deleteUser = async () => {
     try {
-      const res = await fetchData("/auth/delete/", "DELETE", {
-        id: id,
-      });
+      const res = await fetchData(
+        "/auth/delete/",
+        "DELETE",
+        {
+          id: id,
+        },
+        userCtx.accessToken
+      );
       if (res.ok) {
         console.log(`user deleted successfully`);
         getAllUsers();
