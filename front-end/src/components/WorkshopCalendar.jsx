@@ -73,11 +73,16 @@ const WorkshopCalendar = (props) => {
 
   const addBooking = async () => {
     try {
-      const res = await fetchData("/workshops/addBooking", "PUT", {
-        workshop_type: bookingShop,
-        booking_date: bookingDate,
-        booking_cost: 1234,
-      });
+      const res = await fetchData(
+        "/workshops/addBooking",
+        "PUT",
+        {
+          workshop_type: bookingShop,
+          booking_date: bookingDate,
+          booking_cost: 1234,
+        },
+        userCtx.accessToken
+      );
       if (res.ok) {
         console.log(`booking added successfully`);
         getBookings();
@@ -205,7 +210,7 @@ TODO:
 -[x] edit material inventory item quantity
 -[x] edit user role 
 -[x] delete user
--[] middleware (authUser, authStaff, authAdmin)
+-[x] middleware (authUser, authStaff, authAdmin)
 -[] validators (express-validator, it's the .not().isEmpty() shit)
 
 -[x] show/hide cal in 1 shortcircuit button
