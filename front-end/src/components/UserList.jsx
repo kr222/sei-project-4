@@ -51,19 +51,6 @@ const UserList = () => {
               {userList.map((item) => {
                 return (
                   <TableRow key={item.id}>
-                    {/* <TableCell>{item.username}</TableCell>
-                    <TableCell>{item.role}</TableCell>
-                    <TableCell>{item.id}</TableCell>
-                    <TableCell>
-                      <Button onClick={() => editUserRole(item.id)}>
-                        Edit Role
-                      </Button>
-                    </TableCell>
-                    <TableCell>
-                      <Button onClick={() => deleteUser(item.id)}>
-                        Delete
-                      </Button>
-                    </TableCell> */}
                     <UserListItem
                       id={item.id}
                       username={item.username}
