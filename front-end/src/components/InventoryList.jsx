@@ -72,15 +72,7 @@ const InventoryList = () => {
     <>
       <Paper style={{ margin: "15px" }}>
         <Typography variant="h4">Current Inventory</Typography>
-        <Button
-          onClick={() =>
-            console.log(
-              `${nameRef.current.value}, ${quantityRef.current.value}`
-            )
-          }
-        >
-          asdf
-        </Button>
+
         {userCtx.role === "staff" && addMaterial && (
           <Button
             variant="contained"
