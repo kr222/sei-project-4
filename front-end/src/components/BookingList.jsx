@@ -44,7 +44,7 @@ const BookingList = () => {
     <>
       <Paper>
         <Typography variant="h4">Booking list</Typography>
-        <Button onClick={() => getAllBookings()}>test get bookings</Button>
+
         <TableContainer>
           <Table>
             <TableHead>
