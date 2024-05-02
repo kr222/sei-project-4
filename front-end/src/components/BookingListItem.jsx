@@ -1,6 +1,6 @@
 import { TableCell, Button, TextField } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
+import UserContext from "../context/user";
 import useFetch from "../hooks/useFetch";
 
 const BookingListItem = ({
@@ -11,6 +11,7 @@ const BookingListItem = ({
   cost,
   getAllBookings,
 }) => {
+  const userCtx = useContext(UserContext);
   const fetchData = useFetch();
   const [editDate, setEditDate] = useState(false);
   const [newDate, setNewDate] = useState("");
@@ -23,12 +24,17 @@ const BookingListItem = ({
 
   const updateBookingDate = async () => {
     try {
-      const res = await fetchData("/workshops/editBooking/", "POST", {
-        id: id,
-        workshop_type: type,
-        booking_date: newDate,
-        booking_cost: cost,
-      });
+      const res = await fetchData(
+        "/workshops/editBooking/",
+        "POST",
+        {
+          id: id,
+          workshop_type: type,
+          booking_date: newDate,
+          booking_cost: cost,
+        },
+        userCtx.accessToken
+      );
       if (res.ok) {
         getAllBookings();
         setEditDate(false);
@@ -41,9 +47,14 @@ const BookingListItem = ({
 
   const deleteBooking = async () => {
     try {
-      const res = await fetchData("/workshops/deleteBooking/", "DELETE", {
-        id: id,
-      });
+      const res = await fetchData(
+        "/workshops/deleteBooking/",
+        "DELETE",
+        {
+          id: id,
+        },
+        userCtx.accessToken
+      );
       if (res.ok) {
         console.log(`booking deleted successfully`);
         getAllBookings();
