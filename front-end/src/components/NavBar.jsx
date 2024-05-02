@@ -66,10 +66,6 @@ const NavBar = () => {
               Logout
             </Button>
           )}
-
-          <Button color="inherit" onClick={() => console.log(userCtx)}>
-            test
-          </Button>
         </Toolbar>
       </AppBar>
     </Box>
