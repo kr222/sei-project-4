@@ -1,8 +1,10 @@
 import { TableCell, Button, TextField } from "@mui/material";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import useFetch from "../hooks/useFetch";
+import UserContext from "../context/user";
 
 const InventoryListItem = ({ id, type, name, quantity, getAllMaterials }) => {
+  const userCtx = useContext(UserContext);
   const fetchData = useFetch();
   const [editQuantity, setEditQuantity] = useState(false);
   const quantityRef = useRef();
@@ -44,12 +46,12 @@ const InventoryListItem = ({ id, type, name, quantity, getAllMaterials }) => {
       {!editQuantity && <TableCell>{quantity}</TableCell>}
       {editQuantity && (
         <TableCell>
-          <TextField inputRef={quantityRef} />
+          <TextField inputRef={quantityRef} defaultValue={quantity} />
         </TableCell>
       )}
-      <TableCell>{id}</TableCell>
+      {userCtx.role === "staff" && <TableCell>{id}</TableCell>}{" "}
       <TableCell>
-        {!editQuantity && (
+        {!editQuantity && userCtx.role === "staff" && (
           <Button onClick={() => setEditQuantity(true)}>Edit Quantity</Button>
         )}
         {editQuantity && (
@@ -57,7 +59,7 @@ const InventoryListItem = ({ id, type, name, quantity, getAllMaterials }) => {
         )}
       </TableCell>
       <TableCell>
-        {!editQuantity && (
+        {!editQuantity && userCtx.role === "staff" && (
           <Button onClick={() => deleteMaterial()}>Delete</Button>
         )}
         {editQuantity && (
