@@ -4,7 +4,14 @@ import useFetch from "../hooks/useFetch";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import enUS from "date-fns/locale/en-US";
-import { Button, Select, MenuItem, TextField } from "@mui/material";
+import {
+  Button,
+  Select,
+  MenuItem,
+  TextField,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 
 const WorkshopCalendar = (props) => {
   // calendar localisation
@@ -19,6 +26,21 @@ const WorkshopCalendar = (props) => {
     getDay,
     locales,
   });
+
+  // code for creating new booking
+  const [showCreateBooking, setShowCreateBooking] = useState(false);
+  const [bookingDate, setBookingDate] = useState("");
+  const [bookingShop, setBookingShop] = useState("");
+
+  const handleDateChange = (event) => {
+    setBookingDate(event.target.value);
+    console.log(bookingDate);
+  };
+
+  const handleShopChange = (event) => {
+    setBookingShop(event.target.value);
+    console.log(bookingShop);
+  };
 
   // store events fetched from db
   const fetchData = useFetch();
@@ -50,8 +72,8 @@ const WorkshopCalendar = (props) => {
   const addBooking = async () => {
     try {
       const res = await fetchData("/workshops/addBooking", "PUT", {
-        workshop_type: "Wood Shop",
-        booking_date: "2024-05-05",
+        workshop_type: bookingShop,
+        booking_date: bookingDate,
         booking_cost: 1234,
       });
       if (res.ok) {
@@ -75,16 +97,40 @@ const WorkshopCalendar = (props) => {
 
   return (
     <>
-      <Button variant="contained" onClick={() => addBooking()}>
-        dog
-      </Button>
+      <br />
       <Button onClick={() => setShowCal(true)}>show cal</Button>
       <Button onClick={() => setShowCal(false)}>hide cal</Button>
-      <Select>
-        <MenuItem>asdf</MenuItem>
-        <MenuItem>qwer</MenuItem>
-      </Select>
-      <input type="date"></input>
+      {showCreateBooking && (
+        <>
+          <FormControl style={{ minWidth: 150 }}>
+            <InputLabel>Select shop</InputLabel>
+            <Select onChange={handleShopChange} style={{ height: "50px" }}>
+              <MenuItem>Select shop</MenuItem>
+              <MenuItem value="Wood Shop">Wood Shop</MenuItem>
+              <MenuItem value="Metal Shop">Metal Shop</MenuItem>
+            </Select>
+          </FormControl>
+          <input
+            type="date"
+            onChange={handleDateChange}
+            style={{ height: "50px" }}
+          ></input>
+        </>
+      )}
+      <Button
+        style={{ height: "50px" }}
+        variant="contained"
+        onClick={() => addBooking()}
+      >
+        Create New Booking
+      </Button>
+      <Button
+        style={{ height: "50px" }}
+        variant="contained"
+        onClick={() => setShowCreateBooking(true)}
+      >
+        test values
+      </Button>
 
       {showCal && (
         <Calendar
