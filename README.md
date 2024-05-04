@@ -12,8 +12,9 @@ Signin page:
 Homepage calendar section:
 ![Homepage calendar section](https://github.com/kr222/sei-project-4/assets/59068114/57d27554-0a5f-4242-9740-bcc574c9c342)
 
-Homepage user calendar section:
-![Homepage user calendar section](https://github.com/kr222/sei-project-4/assets/59068114/dcdd8791-e36d-46ae-b446-847a31819c9c)
+Homepage user inventory section:
+![Homepage user inventory section](https://github.com/kr222/sei-project-4/assets/59068114/3b5ffa20-ec01-4980-8d39-eccc90581477)
+
 
 Create new booking as a user:
 ![Create new booking](https://github.com/kr222/sei-project-4/assets/59068114/7b482c17-5efb-4338-9229-e7d1430bf370)
